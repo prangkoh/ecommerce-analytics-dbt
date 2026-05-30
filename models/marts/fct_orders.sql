@@ -1,5 +1,19 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='order_id',
+        on_schema_change='sync_all_columns'
+    )
+}}
+
 with orders as (
     select * from {{ ref('int_orders_with_details') }}
+
+    {% if is_incremental() %}
+        -- on incremental runs, only grab orders newer than
+        -- the latest order_date already in the table
+        where order_date > (select max(order_date) from {{ this }})
+    {% endif %}
 ),
 
 lineitems as (
@@ -21,22 +35,15 @@ lineitems as (
 
 final as (
     select
-        -- keys
         o.order_id,
         o.customer_id,
-
-        -- dates
         o.order_date,
         o.order_date::date                              as order_month_start,
         date_trunc('month', o.order_date)               as order_month,
         date_trunc('year',  o.order_date)               as order_year,
-
-        -- order details
         o.status,
         o.order_priority,
         o.total_price,
-
-        -- line item metrics
         l.total_line_items,
         l.total_quantity,
         l.gross_revenue,
@@ -46,12 +53,8 @@ final as (
         l.returned_items,
         l.first_ship_date,
         l.last_ship_date,
-
-        -- days to ship
         datediff('day', o.order_date,
                         l.first_ship_date)              as days_to_first_ship,
-
-        -- customer & geography
         o.customer_name,
         o.market_segment,
         o.nation_name,

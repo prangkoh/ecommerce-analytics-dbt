@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: mart_supplier_performance
+    description: "Supplier performance metrics using custom macros for revenue formatting and surrogate keys"
+    columns:
+      - name: supplier_key
+        tests:
+          - unique
+          - not_null
+      - name: supplier_id
+        tests:
+          - not_null
+      - name: net_revenue_dollars
+        tests:
+          - not_null

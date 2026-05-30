@@ -1,0 +1,12 @@
+{% macro generate_surrogate_key(field_list) %}
+    md5(
+        cast(
+            concat_ws('|',
+                {%- for field in field_list %}
+                cast({{ field }} as varchar)
+                {%- if not loop.last %}, {% endif %}
+                {%- endfor %}
+            ) as varchar
+        )
+    )
+{% endmacro %}
