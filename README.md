@@ -15,12 +15,14 @@ macros, and dev/prod environment separation.
 ---
 
 ## Project Structure
+```
 models/
-  staging/          # 1-to-1 with source tables, light cleanup only
-  intermediate/     # Business logic, joins, aggregations
-  marts/            # Final analytics-ready tables for BI tools
+├── staging/          # 1-to-1 with source tables, light cleanup only
+├── intermediate/     # Business logic, joins, aggregations
+└── marts/            # Final analytics-ready tables for BI tools
 snapshots/            # SCD2 tracking for slowly changing dimensions
 macros/               # Reusable SQL functions (DRY principle)
+```
 
 ## Data Sources
 
