@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: tpch
+    description: "Raw TPC-H sample data from Snowflake — simulates an e-commerce transactional database"
+    database: SNOWFLAKE_SAMPLE_DATA
+    schema: TPCH_SF1
+    tables:
+      - name: orders
+        description: "One row per customer order"
+      - name: lineitem
+        description: "One row per line item within an order (the most granular table)"
+      - name: customer
+        description: "Customer master data"
+      - name: nation
+        description: "Nation reference table"
+      - name: region
+        description: "Region reference table"
+      - name: supplier
+        description: "Supplier master data"
+      - name: part
+        description: "Product/part master data"

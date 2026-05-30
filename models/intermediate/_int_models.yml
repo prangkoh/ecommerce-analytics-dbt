@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: int_orders_with_details
+    description: "Orders enriched with customer and geography data"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+  - name: int_lineitems_with_details
+    description: "Line items enriched with supplier and geography data"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: int_customer_order_summary
+    description: "One row per customer with aggregated order history"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null

@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Core sales fact table — one row per order, fully enriched with customer, geography, and line item metrics"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['O', 'F', 'P']
+
+  - name: dim_customers
+    description: "Customer dimension with RFM-style segmentation — one row per customer"
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_segment
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Champion', 'Loyal', 'Big Spender', 'Power User', 'Standard']
+
+  - name: mart_revenue_by_region
+    description: "Monthly revenue aggregated by region and nation — used for executive reporting"
+    columns:
+      - name: region_name
+        tests:
+          - not_null
+      - name: nation_name
+        tests:
+          - not_null
